@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="1" author="sha">
+        <sql>
+            CREATE TABLE category (
+            category_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255) DEFAULT NULL,
+            PRIMARY KEY (category_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE category;
+        </rollback>
+    </changeSet>
+    <changeSet id="2" author="sha">
+        <sql>
+            CREATE TABLE categorytype (
+            categorytype_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+            name varchar(255) DEFAULT NULL,
+            PRIMARY KEY (categorytype_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE categorytype;
+        </rollback>
+    </changeSet>
+    <changeSet id="3" author="sha">
+        <sql>
+            CREATE TABLE category_categorytype (
+            category_id BIGINT(20) NOT NULL,
+            categorytype_id BIGINT(20) NOT NULL,
+            PRIMARY KEY (category_id,categorytype_id),
+            KEY `FK3sybbfdp9n6qr13x24s3vjbph` (categorytype_id),
+            CONSTRAINT `FK3sybbfdp9n6qr13x24s3vjbph` FOREIGN KEY (categorytype_id) REFERENCES categorytype (categorytype_id) ON DELETE CASCADE ON UPDATE CASCADE ,
+            CONSTRAINT `FKfr73ptvvaieih4j8p91bqpag1` FOREIGN KEY (category_id) REFERENCES category (category_id) ON DELETE CASCADE ON UPDATE CASCADE
+            );
+        </sql>
+        <rollback>
+            DROP TABLE category_categorytype;
+        </rollback>
+    </changeSet>
+    <changeSet id="4" author="sha">
+        <sql>
+            CREATE TABLE product (
+            product_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+            color VARCHAR(255) DEFAULT NULL,
+            description VARCHAR(10000) DEFAULT NULL,
+            discount_price double DEFAULT NULL,
+            material VARCHAR(255) DEFAULT NULL,
+            name VARCHAR(255) NOT NULL,
+            price double DEFAULT NULL,
+            quantity BIGINT(20) DEFAULT NULL,
+            size VARCHAR(255) DEFAULT NULL,
+            supplier_id BIGINT(20) DEFAULT NULL,
+            category_id BIGINT(20) DEFAULT NULL,
+            PRIMARY KEY (product_id),
+            KEY `FK1mtsbur82frn64de7balymq9s` (category_id),
+            CONSTRAINT `FK1mtsbur82frn64de7balymq9s` FOREIGN KEY (category_id) REFERENCES category (category_id) ON DELETE CASCADE ON UPDATE CASCADE
+            );
+        </sql>
+        <rollback>
+            DROP TABLE product;
+        </rollback>
+
+    </changeSet>
+    <changeSet id="5" author="sha">
+        <sql>
+            CREATE TABLE product_image (
+            id_image BIGINT(20) NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255) DEFAULT NULL,
+            product_id BIGINT(20) DEFAULT NULL,
+            PRIMARY KEY (id_image),
+            KEY `FK6oo0cvcdtb6qmwsga468uuukk` (product_id),
+            CONSTRAINT `FK6oo0cvcdtb6qmwsga468uuukk` FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE ON UPDATE CASCADE
+            );
+        </sql>
+        <rollback>
+            DROP TABLE product_image;
+        </rollback>
+    </changeSet>
+    <changeSet id="6" author="sha">
+        <sql>
+            INSERT INTO category (category_id, name) VALUES (1,'Sofa'),(2,'Bàn thấp'),(3,'Ghế'),(4,'Tủ tivi'),(5,'Bàn ăn'),(6,'Tủ bếp'),(7,'Giường'),(8,'Bàn đầu giường'),(9,'Bàn trang điểm'),(10,'Tủ áo'),(11,'Nệm'),(12,'Chăn - gối - ga'),(13,'Gương'),(14,'Thảm'),(15,'Gối tựa sofa'),(16,'Bình trang trí'),(17,'Tượng trang trí'),(18,'Đèn trang trí'),(19,'Khung tranh'),(20,'Ghế ngoài trời'),(21,'Bàn ngoài trời'),(22,'Gối đệm');
+            INSERT INTO categorytype (categorytype_id, name) VALUES (1,'Phòng khách'),(2,'Phòng ăn'),(3,'Phòng ngủ'),(4,'Trang trí  - Gia dụng'),(5,'Ngoài trời');
+            INSERT INTO category_categorytype VALUES (1,1),(2,1),(3,1),(4,1),(5,2),(6,2),(3,3),(4,3),(7,3),(8,3),(9,3),(10,3),(11,3),(12,3),(13,3),(13,4),(14,4),(15,4),(16,4),(17,4),(18,4),(19,4),(22,4),(20,5),(21,5);
+            INSERT INTO product VALUES (1,'Xanh navy','Thoải mái cổ điển. Sofa Parra là một cổ điển hiện đại và lý tưởng cho các ngôi nhà hiện đại, nơi cần sự thoải mái. Tự hào với mật độ cao, chỗ ngồi đầy bọt với đệm lưng và ghế hộp gắn liền, Parra được đóng khung bởi cánh tay theo dõi kiểu dáng đẹp cho một cái nhìn hiện đại trong phòng khách của bạn. Màu sắc hải quân phong phú cung cấp cho ngôi nhà của bạn một màu sắc linh hoạt để trang trí chống lại, trong khi vải polyester mềm mại dễ chăm sóc. Gối tạo điểm nhấn sang trọng mang đến sự thích thú và hình ảnh nổi bật cho vẻ ngoài chắc chắn sẽ gây ấn tượng. Sản xuất tại Canada.',NULL,'Polyester','The Parra Sofa - Navy',13878000,50,'80\" w x 35\" h x 35\" d (203-90-90)',1,1),(2,'Bạc','Thoải mái cổ điển. Sofa Parra là một cổ điển hiện đại và lý tưởng cho các ngôi nhà hiện đại, nơi cần sự thoải mái. Tự hào với mật độ cao, chỗ ngồi đầy bọt với đệm lưng và ghế hộp gắn liền, Parra được đóng khung bởi cánh tay theo dõi kiểu dáng đẹp cho một cái nhìn hiện đại trong phòng khách của bạn. Màu sắc hải quân phong phú cung cấp cho ngôi nhà của bạn một màu sắc linh hoạt để trang trí chống lại, trong khi vải polyester mềm mại dễ chăm sóc. Gối tạo điểm nhấn sang trọng mang đến sự thích thú và hình ảnh nổi bật cho vẻ ngoài chắc chắn sẽ gây ấn tượng. Sản xuất tại Canada.',NULL,'Polyester','The Parra Sofa - Silver',13878000,50,'80\" w x 35\" h x 35\" d (203-90-90)',1,1),(3,'Xám tro','Thoải mái cổ điển. Sofa Parra là một cổ điển hiện đại và lý tưởng cho các ngôi nhà hiện đại, nơi cần sự thoải mái. Tự hào với mật độ cao, chỗ ngồi đầy bọt với đệm lưng và ghế hộp gắn liền, Parra được đóng khung bởi cánh tay theo dõi kiểu dáng đẹp cho một cái nhìn hiện đại trong phòng khách của bạn. Màu sắc hải quân phong phú cung cấp cho ngôi nhà của bạn một màu sắc linh hoạt để trang trí chống lại, trong khi vải polyester mềm mại dễ chăm sóc. Gối tạo điểm nhấn sang trọng mang đến sự thích thú và hình ảnh nổi bật cho vẻ ngoài chắc chắn sẽ gây ấn tượng. Sản xuất tại Canada.',NULL,'Polyester','The Parra Sofa - Ash',13878000,50,'80\" w x 35\" h x 35\" d (203-90-90)',1,1),(4,'Xám đen','Các đường khâu may được may ở cả lưng và ghế tạo nên nét hiện đại. Chất liệu vải dễ chăm sóc với màu xám đậm với những đường nét đơn giản nhưng thanh lịch làm cho chiếc ghế này trở nên hoàn hảo phù hợp với trang trí hiện có của bạn.Sản xuất tại Trung Quốc',NULL,'Polyester','Kavanaugh Sofa - Dark Grey',11560000,100,'74\" w x 32\" h x 32\" d (188-81-81)',2,1),(5,'Than củi','Những đường nét sang trọng, tinh xảo của ghế sofa Ellis giữ cho phòng khách của bạn trên một đường đua đầy phong cách. Ghế bọc than dễ chăm sóc phản ánh trung tính phổ biến nhất hiện nay, do đó, nó hoạt động với hầu hết các trang trí hiện có và bất kỳ phần nhấn nào bạn thêm vào. Cánh tay thon dài, đệm lưng và chân nêm màu merlot kết thúc với sự duyên dáng dứt khoát. Sản xuất tại Canada.',NULL,'Polyester','Ellis Sofa - Charcoal',11560000,100,'75\" w x 35\" h x 35\" d (190-90-90)',3,1),(6,'Xanh navy','Thêm một phong cách hiện đại cho phòng khách của bạn với những đường nét sạch sẽ của ghế sofa Ryo. Được thiết kế để thể hiện sự thanh lịch và thoải mái, mảnh độc đáo này có bọc nhung màu xanh cho sự quyến rũ vượt thời gian. Ghế sofa phong cách này có đệm ngồi và đệm lưng sang trọng với nút thắt lưng và cánh tay với điểm nhấn đầu móng tay. Tựa lưng cong thanh lịch và cuộn thêm thoải mái và hấp dẫn thị giác. ',NULL,'Nhung, gỗ','Ryo Sofa - Navy',25900000,70,'37\" w x 39\" h x 91\" d (94-100-231)',4,1),(7,'Xanh rêu','Thêm một phong cách hiện đại cho phòng khách của bạn với những đường nét sạch sẽ của ghế sofa Ryo. Được thiết kế để thể hiện sự thanh lịch và thoải mái, mảnh độc đáo này có bọc nhung màu xanh cho sự quyến rũ vượt thời gian. Ghế sofa phong cách này có đệm ngồi và đệm lưng sang trọng với nút thắt lưng và cánh tay với điểm nhấn đầu móng tay. Tựa lưng cong thanh lịch và cuộn thêm thoải mái và hấp dẫn thị giác. ',NULL,'Nhung, gỗ','Ryo Sofa - Green',25900000,70,'37\" w x 39\" h x 91\" d (94-100-231)',4,1),(8,'Xám lạnh','Một chiếc ghế sofa đẹp trai là thoải mái như nó trông. Được thiết kế để thư giãn, cánh tay loe tròn và lưng hoàn hảo sẽ giúp bạn thoải mái. Ghế có thể tháo rời và đệm lưng dễ dàng nằm trên khung kiến ​​trúc của nó cho một sự rung cảm thông thường. Ghép nối nó với ghế Zion phù hợp, hoặc đi một mình.',NULL,'Giả da, thép','Zion Sofa - Distressed Gray',42500000,80,'86.6\" w x 33.9\" h x 34.6\" d (220-86-88)',5,1),(9,'Xám','Phong cách giữa thế kỷ được cập nhật với hình bóng sofa kiểu dáng đẹp này. Các kênh thẳng đứng chụm sâu gợi lên sự thanh lịch thuần khiết, trong khi đệm ghế dường như nổi trên khung gỗ chắc chắn có cạnh với chân thon. Sẵn sàng cho sự thoải mái, nó được bao phủ trong lớp nhung mềm mại, phong phú và bao gồm ba chiếc gối ném phù hợp.',NULL,'Nhung','Langston Sofa',41285000,100,'78\" w x 31.9\" h x 36\" d (198-81-91)',6,1),(10,'Xám bạc','Sofa màu xám bạc Maree có phong cách và sự thoải mái trong các thẻ với đệm và vải sang trọng cũng như khâu thiết kế. Đệm lưng có đệm, cánh tay gối và chân đế xếp chồng lên nhau hỗ trợ cho những chiếc ghế thoải mái. Khâu bóng chày tông màu cùng với viền trang trí mang đến một thẩm mỹ mạnh mẽ, sang trọng. Với tất cả sự hỗ trợ và ngoại hình đẹp, bạn sẽ tự hào về nội thất phòng khách của mình.',NULL,'Vải Microsuede','Maree Sofa - Silver Grey',18497000,100,'799$ (18.497.000vnd)',7,1),(11,'Than củi','Với ghế sofa Julianstown trong than, bạn có được sự thoải mái vượt trội mà không mất phong cách. Chân thon, hình trụ cung cấp sự tinh tế của biểu tượng retro, trong khi các đường kẻ sạch sẽ và cánh tay theo dõi cao cân bằng diện mạo này với sự quyến rũ hiện đại. Ghế bọc polyester mềm mại, than củi là lý tưởng cho thư giãn ấm cúng và có một nút thắt lưng và khâu nhấn tinh tế để hoàn thành chiếc ghế sofa xứng đáng này.',NULL,'Polyester','Julianstown Sofa - Charcoal',11560000,100,'78\" w x 34\" h x 34\" d (198-86-86)',8,1),(12,'Xanh biển','Pha trộn với các mảnh hiện đại hoặc được bao quanh bởi các kho báu cổ điển khác, các đường nét sạch sẽ và thiết kế không vô nghĩa cũng truyền cảm hứng và bắt mắt không kém. Ghế bọc màu xanh, đặc biệt, đặt nó như một mảnh phòng khách xác định không gian. Gối Accent cung cấp một mô hình vượt thời gian và màu sắc phù hợp. Sản xuất tại Canada.',NULL,'Polyester','Pacific Sofa - Blue',20809000,100,'78\" w x 34\" h x 34\" d (198-86-86)',9,1),(13,'Đỏ','Trang trí của bạn một nâng cấp táo bạo với ghế sofa Orson Red. Nổi bật với màu đỏ đậm, bộ sofa phòng khách này tự hào với chất liệu vải lấy cảm hứng từ nam giới, đẹp trai như nó rất bền. Đệm lưng chắc chắn, các chi tiết thiết kế tròn và viền trang trí kết hợp cho thẩm mỹ sạch sẽ, trong khi xây dựng thông minh giúp bạn được hỗ trợ tốt. Gối có họa tiết hình học (bao gồm) thêm vào vẻ ngoài sắc sảo. Sản xuất tại Canada',NULL,'Vải tweed','Orson Sofa - Red',21972000,90,'84\" w x 36\" h x 35\" d (213-91-90)',10,1),(14,'Xám','Được bọc trong vải chenille ấm cúng, chiếc ghế này là một mảnh hoàn hảo để đặt trong trung tâm của không gian sống của bạn. Nếu bạn muốn phối hợp món đồ này với các phụ kiện nhà yêu thích của bạn, tông màu xám lạnh của vải bọc sẽ là một sự phù hợp hoàn hảo.',NULL,'Gỗ Alder, gỗ thông, ván OSB','Bayham Chenille Chair - Grey',11560000,100,'36.5\" w x 37\" h x 36\" d (93-94-91)',11,3),(15,'Xám sáng','Khung làm bằng vỏ gỗ chắc chắn với gỗ dán bên ngoài làm cho đồ nội thất bền và chống sốc. Vải polyester cung cấp độ bền cao nhất.',NULL,'Polyester','Stella Chair - Light Grey',9247000,100,'35\" w x 31\" h x 34\" d (90-79-86)',12,3),(16,'Be','Hiện đại hóa phòng  của bạn với chiếc ghế  Kuryakin này. Một màn hình hoàn hảo của phong cách retro, thiết kế đơn giản này có ghế bọc vải mềm và chân kim loại thon. Khi bạn ngồi vào chiếc ghế có đường viền này, bạn sẽ được chào đón bởi ghế bọc vải mềm và đệm xốp sang trọng. Đôi cánh tròn uốn quanh tựa lưng vào bề mặt ghế để tăng thêm sự hấp dẫn thị giác. Và cuối cùng, đôi chân kim loại thanh mảnh mang đến cho toàn bộ tác phẩm này một ấn tượng thanh lịch.',NULL,'Kim loại và Polyester','Kuryakin Dining Chair – Beige',2416000,100,'22.50\" w x 35\" h x 19.25\" d (57-90-49)',13,3),(17,'Xanh navy','Khi bạn dành thời gian ở sân sau hoặc trên hiên nhà, bạn vẫn muốn sự thoải mái của đồ nội thất trong nhà. Với ghế đệm sâu, bạn sẽ không bao giờ phải lo lắng về việc hy sinh vẻ thoải mái. Khung hợp kim nhôm bền bỉ đảm bảo ghế nhẹ và dễ dàng di chuyển phù hợp với nhu cầu của bạn.',NULL,'Nhựa đan lát, Hỗn hợp vải polyester và olefin','Pisces Armless Lounge Chair - Navy',5772000,150,'35\" w x 37.5\" h x 24.5\" d (90-95-62)',14,3),(18,'Wind Oak( Sồi gió)','Nâng cấp giải trí gia đình của bạn với giá đỡ TV 47 inch Avenue này. Cửa bảng điều khiển khung, cột đầy đủ và một cơ sở đường viền mang lại cái nhìn sang trọng thủ công. Kết hợp với kệ mở và tủ kín để lưu trữ các phụ kiện phương tiện gia đình của bạn, trung tâm giải trí này thêm phong cách cũng như chức năng cho phòng khách của bạn. TV này là sự hợp nhất giữa đương đại và truyền thống mang đến một thiết kế thanh lịch và đẳng cấp.',NULL,'Gỗ','Avenue Eight 47\" TV Stand - Wind Oak',9200000,80,'47\" w x 24.38\" h x 18.88\" d',15,4);
+            INSERT INTO `product_image` VALUES (1,'ParraSofaNavi1.jpg',1),(2,'ParraSofaNavi2.jpg',1),(3,'ParraSofaNavi3.jpg',1),(4,'ParraSofaNavi4.jpg',1),(5,'ParraSofa_Silver1.jpg',2),(6,'ParraSofa_Silver2.jpg',2),(7,'ParraSofa_Silver3.jpg',2),(8,'ParraSofa_Silver4.jpg',2),(9,'ParraSofa_Ash1.jpg',3),(10,'ParraSofa_Ash2.jpg',3),(11,'ParraSofa_Ash3.jpg',3),(12,'ParraSofa_Ash4.jpg',3),(13,'KavanaughSofa_Dark Grey1.jpg',4),(14,'KavanaughSofa_Dark Grey2.jpg',4),(15,'KavanaughSofa_Dark Grey3.jpg',4),(16,'KavanaughSofa_Dark Grey4.jpg',4),(17,'EllisSofa_Charcoal1.jpg',5),(18,'EllisSofa_Charcoal2.jpg',5),(19,'EllisSofa_Charcoal3.jpg',5),(20,'EllisSofa_Charcoal4.jpg',5),(21,'RyoSofa_Navy_1.jpg',6),(22,'RyoSofa_Navy_2.jpg',6),(23,'RyoSofa_Navy_3.jpg',6),(24,'RyoSofa_Navy_4.jpg',6),(25,'RyoSofa_Green_1.jpg',7),(26,'RyoSofa_Green_2.jpg',7),(27,'RyoSofa_Green_3.jpg',7),(28,'RyoSofa_Green_4.jpg',7),(29,'ZionSofa_DistressedGray_1.jpg',8),(30,'ZionSofa_DistressedGray_2.jpg',8),(31,'ZionSofa_DistressedGray_3.jpg',8),(32,'ZionSofa_DistressedGray_4.jpg',8),(33,'LangstonSofa_1.jpg',9),(34,'LangstonSofa_2.jpg',9),(35,'LangstonSofa_3.jpg',9),(36,'LangstonSofa_4.jpg',9),(37,'MareeSofa_SilverGrey_1.jpg',10),(38,'MareeSofa_SilverGrey_2.jpg',10),(39,'MareeSofa_SilverGrey_3.jpg',10),(40,'MareeSofa_SilverGrey_4.jpg',10),(41,'JulianstownSofa_Charcoal_1.jpg',11),(42,'JulianstownSofa_Charcoal_2.jpg',11),(43,'JulianstownSofa_Charcoal_3.jpg',11),(44,'JulianstownSofa_Charcoal_4.jpg',11),(45,'PacificSofa_Blue_1.jpg',12),(46,'PacificSofa_Blue_2.jpg',12),(47,'PacificSofa_Blue_3.jpg',12),(48,'PacificSofa_Blue_4.jpg',12),(49,'OrsonSofa_Red_1.jpg',13),(50,'OrsonSofa_Red_2.jpg',13),(51,'OrsonSofa_Red_3.jpg',13),(52,'OrsonSofa_Red_4.jpg',13),(53,'BayhamChenilleChair_Grey_1.jpg',14),(54,'BayhamChenilleChair_Grey_1.jpg',14),(55,'BayhamChenilleChair_Grey_1.jpg',14),(56,'BayhamChenilleChair_Grey_1.jpg',14),(57,'StellaChair_LightGrey_1.jpg',15),(58,'StellaChair_LightGrey_2.jpg',15),(59,'StellaChair_LightGrey_3.jpg',15),(60,'StellaChair_LightGrey_4.jpg',15),(61,'KuryakinChair_Beige_1.jpg',16),(62,'KuryakinChair_Beige_2.jpg',16),(63,'KuryakinChair_Beige_3.jpg',16),(64,'KuryakinChair_Beige_4.jpg',16),(65,'PiscesArmlessLoungeChair_Navy_1.jpg',17),(66,'PiscesArmlessLoungeChair_Navy_2.jpg',17),(67,'PiscesArmlessLoungeChair_Navy_3.jpg',17),(68,'PiscesArmlessLoungeChair_Navy_4.jpg',17),(69,'Avenue Eight_47_1.jpg',18),(70,'Avenue Eight_47_2.jpg',18),(71,'Avenue Eight_47_3.jpg',18),(72,'Avenue Eight_47_4.jpg',18);
+        </sql>
+        <rollback>
+            TRUNCATE TABLE course;
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

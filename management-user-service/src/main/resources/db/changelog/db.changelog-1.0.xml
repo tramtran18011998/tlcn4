@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="1" author="sha">
+        <sql>
+            CREATE TABLE role (
+            role_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255) DEFAULT NULL,
+            PRIMARY KEY (role_id),
+            UNIQUE KEY `UK_epk9im9l9q67xmwi4hbed25do` (name)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE role;
+        </rollback>
+    </changeSet>
+    <changeSet id="2" author="sha">
+        <sql>
+            CREATE TABLE user (
+            user_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+            created_date datetime DEFAULT NULL,
+            updated_date datetime DEFAULT NULL,
+            address VARCHAR(255) DEFAULT NULL,
+            email VARCHAR(255) NOT NULL,
+            image_url VARCHAR(255) DEFAULT NULL,
+            instatus BIGINT(20) DEFAULT NULL,
+            name VARCHAR(255) NOT NULL,
+            password VARCHAR(255) DEFAULT NULL,
+            phone_number VARCHAR(255) DEFAULT NULL,
+            provider VARCHAR(255) DEFAULT NULL,
+            provider_id VARCHAR(255) DEFAULT NULL,
+            PRIMARY KEY (user_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE user;
+        </rollback>
+    </changeSet>
+    <changeSet id="3" author="sha">
+        <sql>
+            CREATE TABLE user_roles (
+            user_id bigint(20) NOT NULL,
+            role_id bigint(20) NOT NULL,
+            PRIMARY KEY (user_id,role_id),
+            KEY `FKrhfovtciq1l558cw6udg0h0d3` (role_id),
+            CONSTRAINT `FK55itppkw3i07do3h7qoclqd4k` FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE ,
+            CONSTRAINT `FKrhfovtciq1l558cw6udg0h0d3` FOREIGN KEY (role_id) REFERENCES role (role_id) ON DELETE CASCADE ON UPDATE CASCADE
+            );
+        </sql>
+        <rollback>
+            DROP TABLE user_roles;
+        </rollback>
+    </changeSet>
+    <changeSet id="4" author="sha">
+        <sql>
+            CREATE TABLE customertype (
+            customertype_id bigint(20) NOT NULL AUTO_INCREMENT,
+            name varchar(255) DEFAULT NULL,
+            PRIMARY KEY (customertype_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE customertype;
+        </rollback>
+
+    </changeSet>
+    <changeSet id="5" author="sha">
+        <sql>
+            CREATE TABLE customer (
+            customer_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+            discount double DEFAULT NULL,
+            customertype_id bigint(20) DEFAULT NULL,
+            user_id bigint(20) DEFAULT NULL,
+            PRIMARY KEY (customer_id),
+            KEY `FK3l2b60felys1kurl1sabbkjjg` (customertype_id),
+            KEY `FKj8dlm21j202cadsbfkoem0s58` (user_id),
+            CONSTRAINT `FK3l2b60felys1kurl1sabbkjjg` FOREIGN KEY (customertype_id) REFERENCES customertype (customertype_id) ON DELETE CASCADE ON UPDATE CASCADE,
+            CONSTRAINT `FKj8dlm21j202cadsbfkoem0s58` FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE
+            ) ;
+        </sql>
+        <rollback>
+            DROP TABLE customer;
+        </rollback>
+    </changeSet>
+    <changeSet id="6" author="sha">
+        <sql>
+            CREATE TABLE employee (
+            employee_id bigint(20) NOT NULL AUTO_INCREMENT,
+            bonus double DEFAULT NULL,
+            position varchar(255) DEFAULT NULL,
+            salary double DEFAULT NULL,
+            user_id bigint(20) DEFAULT NULL,
+            PRIMARY KEY (employee_id),
+            KEY `FK6lk0xml9r7okjdq0onka4ytju` (user_id),
+            CONSTRAINT `FK6lk0xml9r7okjdq0onka4ytju` FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE
+            ) ;
+        </sql>
+        <rollback>
+            DROP TABLE employee;
+        </rollback>
+    </changeSet>
+    <changeSet id="7" author="sha">
+        <sql>
+            CREATE TABLE password_reset_token (
+            id bigint(20) NOT NULL,
+            expiry_date datetime DEFAULT NULL,
+            token varchar(255) DEFAULT NULL,
+            user_id bigint(20) NOT NULL,
+            PRIMARY KEY (id),
+            KEY `FK5lwtbncug84d4ero33v3cfxvl` (user_id),
+            CONSTRAINT `FK5lwtbncug84d4ero33v3cfxvl` FOREIGN KEY (user_id) REFERENCES user (user_id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE password_reset_token;
+        </rollback>
+    </changeSet>
+    <changeSet id="8" author="sha">
+        <sql>
+            INSERT INTO role VALUES (3,'ROLE_ADMIN'),(2,'ROLE_EMPLOYEE'),(1,'ROLE_USER');
+            INSERT INTO user VALUES (1,'2019-12-25 17:06:25','2020-01-01 19:07:09','484 Le Van Viet q9','xin@gmail.com','tranthanh.png',1,'Tran Thanh','$2a$10$T949ZjT6Gl5qmqb3BLlw.e8anCC53.8ZKXHAZUdQDLliZRwom7Hui','0123939337','local',NULL),(2,'2019-12-26 00:08:08','2020-01-01 19:39:27','480 Le Van Viet q9','anh@gmail.com','boss.jpg',1,'Pham The Ky','$2a$10$Q7GByNUHMNW2Gi4Eo5eazeP5dNBfbtrxR02mT2xTS0xqm5zHsfeu6','0129997774','local',NULL),(3,'2019-12-25 17:16:43','2020-01-01 19:46:40','q6','A@gmail.com','codidich.jpg',1,'Co Di Dich','$2a$10$Dcj4wgFdW1dRmm10K3yRJeEs/50gDjYwROrIGupe9QMBa1hRf.Fpe','0129999947','local',NULL);
+            INSERT INTO user_roles VALUES (1,1),(3,2),(2,3);
+            INSERT INTO customertype VALUES (1,'Normal'),(2,'Silver'),(3,'Gold'),(4,'Platinum');
+            INSERT INTO customer VALUES (1,0,1,1);
+            INSERT INTO employee VALUES (1,0,'CEO',NULL,2),(2,0,'Manager',NULL,3);
+        </sql>
+        <rollback>
+            TRUNCATE TABLE user;
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,48 @@
+<!--Header-->
+<div class="container-fluid">
+    <div class="row header-content">
+        <div class="header-logo col-sm-5 col-md-9">
+            <a  routerLink="/"><img src="assets/image/logo.png">Webnoithat</a>
+        </div>
+        <div class="form-inline col-sm-7 col-md-3">
+            <input class="form-control search-header" style="width: 86%;" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-dark my-2 my-sm-0 btn-search-header" type="submit"><i class="fa fa-search"></i></button>
+
+            <!-- <button class="btn btn-dark" style="margin-left: 5px; width: 12%;" (click)="logout()" type="submit"><i
+                class="fa fa-sign-out"></i></button> -->
+        </div>
+    
+    </div>
+</div>
+<!--Thanh Navbar-->
+<div class="navbar">
+    <ul>
+        <li><a routerLink="/">Trang chủ</a></li>
+        <li><a routerLink="/product">Sản phẩm</a></li>
+        <li><a routerLink="/about">Giới thiệu</a></li>
+        <li><a routerLink="/contact">Liên hệ</a></li>
+        <li class="nav-right">
+                   
+            <div *ngIf="checkLogin">
+                <button class="btn btn-dark" style="background: fixed; margin-top: 7px;" (click)="logout()" type="submit"><i
+                    class="fa fa-sign-out"></i></button>
+            </div>
+            
+        </li>
+        
+        <li class="nav-right">
+            <div *ngIf="!checkLogin;else showbtnDN">
+                <a routerLink="/login"><img src="assets/image/login.png">Đăng nhập</a>
+            </div>
+            <ng-template  #showbtnDN><a routerLink="/profile/{{user.id}}"><img src="assets/image/login.png">{{user.name}}</a></ng-template>
+            
+        </li>
+        <li class="nav-right">
+            <div *ngIf="!quantitycart;else showCart">
+                <a routerLink="/cart"><img src="assets/image/shopping-cart.png"> Giỏ hàng</a>
+            </div>
+            <ng-template  #showCart><a routerLink="/cart"><img src="assets/image/shopping-cart.png">  {{   quantitycart}}</a></ng-template>
+            
+        </li>
+    </ul>
+</div>
